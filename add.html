@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Car Information</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+        <ul>
+            <li><a href="index.html">View Car Information</a></li> 
+        </ul>
+    </nav>
+</header>
+<div class="notification" id="notification"></div>
+  <h1>Add Car Information</h1>
+  <form id="carForm">
+    <div>
+      <label for="brand">Brand:</label>
+      <input type="text" id="brand" name="brand" required>
+    </div>
+    <div>
+      <label for="model">Model:</label>
+      <input type="text" id="model" name="model" required>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const notificationElement = document.getElementById('notification')
+    const form = document.getElementById('carForm')
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault()
+
+      const brand = document.getElementById('brand').value
+      const model = document.getElementById('model').value
+
+      const data = {
+        brand: brand,
+        model: model
+      }
+
+      fetch('https://open-long-puck.glitch.me', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.ok) {
+          notificationElement.textContent = 'Duomenys sėkmingai išsaugoti!'
+          notificationElement.className = 'notification success'
+          notificationElement.style.display = 'block'
+          form.reset()
+        } else {
+          notificationElement.textContent = 'Failed to add car information.'
+          notificationElement.className = 'notification error'
+          notificationElement.style.display = 'block'
+        }
+      })
+    })
+  </script>
+</body>
+</html>
